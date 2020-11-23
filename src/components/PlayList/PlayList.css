@@ -1,0 +1,22 @@
+.vertical-scrollable> .rowPlayListCards {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.limitText{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.playListCard{
+  cursor: pointer;
+  width: 90%;
+}
+
+.playListSelectedVideo{
+  color: blue;
+}
