@@ -1,10 +1,15 @@
 import React from 'react';
 
-import PlayListCard from './PlayListCard';
+import {Button, Grid, Paper, } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import {handleNextSong, handleDeleteSong, } from '../../redux/actions';
+
+import PlayListCard from './PlayListCard/PlayListCard';
+import VideoPlayer from './VideoPlayer';
+
+import PrimaryButton from '../Utils/Buttons/PrimaryButton';
 
 import './PlayList.css';
 
@@ -29,27 +34,32 @@ const PlayList = ({videos, currentVideo, }) => {
   }
 
   return(
-    <div className="container vertical-scrollable">
-      <div className="row">
-        <div className="col-4">
-          Mi Playlist
-        </div>
-        <div className="col-8">
-          <button className="btn btn-primary" onClick={startPlayList} disabled={videos.length === 0}>
-            Iniciar
-          </button>
+    <Paper style={{maxHeight: '80vh', padding: 10}}>
+      <div className="vertical-scrollable">
+        <Grid container>
+          <Grid item xs={4}>
+            Mi Playlist
+          </Grid>
+          <Grid item xs={8}>
+            <PrimaryButton title={'Iniciar'} onClick={startPlayList} disabled={videos.length === 0} />
+          </Grid>
+        </Grid>
+        <div className="rowPlayListCards">
+          {
+            videos && videos.map(video =>
+              <div style={{padding: 10}}>
+                <PlayListCard video={video} deleteVideo={deleteVideo}
+                  selectedVideo={currentVideo && currentVideo.id.videoId === video.id.videoId}
+                />
+              </div>
+            )
+          }
         </div>
       </div>
-      <div className="rowPlayListCards">
-        {
-          videos && videos.map(video =>
-            <PlayListCard video={video} deleteVideo={deleteVideo}
-              selectedVideo={currentVideo && currentVideo.id.videoId === video.id.videoId}
-            />
-          )
-        }
+      <div style={{textAlign: 'center', marginTop: 20}}>
+        <VideoPlayer />
       </div>
-    </div>
+    </Paper>
   )
 }
 

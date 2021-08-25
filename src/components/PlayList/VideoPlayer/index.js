@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 
 import ReactPlayer from 'react-player';
+import YouTube from 'react-youtube';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import {handleNextSong, } from '../../redux/actions';
+import {handleNextSong, } from '../../../redux/actions';
 
 const PlayListSelector = createSelector(
   state => state.playList,
@@ -40,14 +41,40 @@ const VideoPlayer = () => {
     }
   }
 
+  const opts = {
+      height: '390',
+      width: '640',
+      playerVars: {
+        // https://developers.google.com/youtube/player_parameters
+        autoplay: 1,
+      },
+    };
+
   return (
-    <ReactPlayer
-      playing
-      height={'250px'}
-      width={'100%'}
-      onEnded={() => nextSong()}
-      url={`https://www.youtube.com/watch?v=${currentVideo && currentVideo.id.videoId}`}
-    />
+    <>
+      <YouTube
+        videoId={currentVideo.id.videoId}
+        id={currentVideo.id.videoId}
+        // className={string}
+        // containerClassName={string}
+        opts={opts}
+        // onReady={func}
+        // onPlay={func}
+        // onPause={func}
+        onEnd={nextSong}
+        // onError={func}
+        // onStateChange={func}
+        // onPlaybackRateChange={func}
+        // onPlaybackQualityChange={func}
+      />
+      {/*<ReactPlayer
+        playing
+        height={'250px'}
+        width={'100%'}
+        onEnded={() => nextSong()}
+        url={`https://www.youtube.com/watch?v=${currentVideo && currentVideo.id.videoId}`}
+      />*/}
+    </>
   )
 }
 

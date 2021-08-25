@@ -1,9 +1,22 @@
 import React, {useState} from 'react';
 
-import {Container, Button, Row, Col, Card, } from 'react-bootstrap';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {Grid, TextField, Card, CardContent, CardMedia, IconButton, Typography, } from '@material-ui/core';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: '15px 5px 5px 5px'
+  },
+  cover: {
+    padding: 5
+  },
+}));
 
 const VideoCard = ({video, addVideoToPlayList, }) => {
 
+  const theme = useTheme();
+  const classes = useStyles();
   // let title = ''
   // if (video.snippet) {
   //   title = video.snippet.title.replace(/&#39;/g, "'")
@@ -11,7 +24,7 @@ const VideoCard = ({video, addVideoToPlayList, }) => {
   // else {
   //   console.log(video);
   // }
-  const title = video.snippet.title.replace(/&#39;/g, "'");
+  const title = video.snippet.title.replace(/&#39;/g, "'").replace(/&quot;/g,'"');
 
   const [showButtons, setShowButtons] = useState(false);
 
@@ -59,7 +72,45 @@ const VideoCard = ({video, addVideoToPlayList, }) => {
         </Row>
       </Container>
     </Card>*/}
-    <div className="card mb-3" style={{width: "90%"}}
+    <Card
+      className={classes.root}
+      onMouseEnter={handleShowButtons}
+      onMouseLeave={handleShowButtons}
+    >
+      <Grid container>
+        <Grid item xs={4}>
+          <CardMedia
+            className={classes.cover}
+            title={title}
+          >
+            <img style={{width: "100%", height: '100%'}} src={video.snippet.thumbnails.medium.url} />
+          </CardMedia>
+        </Grid>
+        <Grid item xs={8}>
+          <CardContent>
+            <Typography variant="h6" className="limitText">
+              {title}
+            </Typography>
+            <Grid container>
+              <Grid item xs={showButtons ? 11 : 12}>
+                <div className="descriptionVideo">
+                  {video.snippet.description}
+                </div>
+              </Grid>
+              {
+                showButtons &&
+                <Grid item xs={1}>
+                  <IconButton onClick={() => addVideoToPlayList(video)}>
+                    <ArrowForwardIcon/>
+                  </IconButton>
+                </Grid>
+              }
+            </Grid>
+          </CardContent>
+        </Grid>
+      </Grid>
+    </Card>
+    {/*<div className="card mb-3" style={{width: "90%"}}
       onMouseEnter={handleShowButtons}
       onMouseLeave={handleShowButtons}
     >
@@ -94,7 +145,7 @@ const VideoCard = ({video, addVideoToPlayList, }) => {
             </div>
         </div>
       </div>
-    </div>
+    </div>*/}
     </>
   )
 }

@@ -1,18 +1,27 @@
 import React from 'react';
 
+import {Grid, TextField, } from '@material-ui/core';
+
+import PrimaryButton from '../Utils/Buttons/PrimaryButton';
+
 const SearchInput = ({search, inputSearch, searchVideos, handleKeypress, }) => {
 
   return(
-    <div className="container">
-      <div className="row">
-        <div className="col-8">
-          <input className="form-control" placeholder="Default input" value={search}
-            onChange={inputSearch} onKeyDown={handleKeypress}/>
-        </div>
-        <div className="col-4">
-          <button className="btn btn-primary" onClick={searchVideos}>Buscar</button>
-        </div>
-      </div>
+    <div onKeyDown={handleKeypress}>
+      <Grid container>
+        <Grid item xs={8}>
+          <TextField
+            name="description"
+            label="Descripción"
+            variant="outlined"
+            value={search}
+            onChange={inputSearch}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <PrimaryButton title={'Buscar'} onClick={searchVideos} />
+        </Grid>
+      </Grid>
     </div>
   )
 }

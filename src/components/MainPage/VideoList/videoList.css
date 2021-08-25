@@ -1,4 +1,5 @@
 .descriptionVideo{
+  opacity: 0.5;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;

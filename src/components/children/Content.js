@@ -2,7 +2,7 @@ import React from 'react';
 
 const Content = ({body}) => {
     return (
-      <div className="Content">
+      <div className="content">
         {body}
       </div>
     );

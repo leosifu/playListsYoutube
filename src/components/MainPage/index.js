@@ -4,8 +4,9 @@ import axios from 'axios';
 import ReactPlayer from 'react-player';
 // import InfiniteScroll from 'react-infinite-scroller';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
-import {Button, } from 'react-bootstrap';
+import {Button, Grid, } from '@material-ui/core';
 
 import youtubeApiCall from '../../config/youtubeApiCall';
 
@@ -17,7 +18,7 @@ import PlayList from '../../containers/PlayList/PlayListContainer';
 import SearchInput from './SearchInput';
 import SearchPaginator from './SearchPaginator';
 import VideoList from './VideoList';
-import VideoPlayer from '../VideoPlayer';
+// import VideoPlayer from '../VideoPlayer';
 
 import './MainPage.css';
 
@@ -29,10 +30,12 @@ const MainPage = () => {
 
   const [videos, setVideos] = useState([]);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
   const [playListVideos, setPlayListVideos] = useState([]);
   const [currentVideo, setCurrentVideo] = useState({});
   const [nextPageToken, setNextPageToken] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
+  const [firstSearch, setFirstSearch] = useState(false);
 
   const searchVideos = async() => {
     // axios.get(`https://www.googleapis.com/youtube/v3/search?key=${process.env.REACT_APP_YOUTUBE_API_KEY}
@@ -40,10 +43,13 @@ const MainPage = () => {
     //   &q=${search}
     //   &type=video
     //   &maxResults=8`)
-    const params = `&part=snippet&maxResults=5&q=${search}&type=video`
-    const result = await youtubeApiCall('search', params);
-    setNextPageToken(result.nextPageToken);
-    setVideos(result.items);
+    if (search) {
+      const params = `&part=snippet&maxResults=5&q=${search}&type=video`
+      const result = await youtubeApiCall('search', params);
+      setNextPageToken(result.nextPageToken);
+      setVideos(result.items);
+      setFirstSearch(true);
+    }
     // axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20
     // &q=${search}&type=video&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`)
     // .then(res => {
@@ -56,10 +62,15 @@ const MainPage = () => {
   }
 
   const nextPage = async() => {
-    const params = `&part=snippet&maxResults=5&q=${search}&pageToken=${nextPageToken}&type=video`
-    const result = await youtubeApiCall('search', params);
-    setVideos([...videos, ...result.items]);
-    setNextPageToken(result.nextPageToken);
+    if (search && firstSearch) {
+      setLoading(true);
+      const params = `&part=snippet&maxResults=5&q=${search}&pageToken=${nextPageToken}&type=video`
+      const result = await youtubeApiCall('search', params);
+      setVideos([...videos, ...result.items]);
+      setNextPageToken(result.nextPageToken);
+      setLoading(false);
+
+    }
     // console.log('siguiente...');
   }
 
@@ -78,39 +89,51 @@ const MainPage = () => {
     dispatch(handlePlayList('add', video))
   }
 
+  const [sentryRef, { rootRef }] = useInfiniteScroll({
+    loading,
+    hasNextPage: true,
+    onLoadMore: nextPage,
+    // When there is an error, we stop infinite loading.
+    // It can be reactivated by setting "error" state as undefined.
+    // disabled: !!error,
+    // `rootMargin` is passed to `IntersectionObserver`.
+    // We can use it to trigger 'onLoadMore' when the sentry comes near to become
+    // visible, instead of becoming fully visible on the screen.
+    // rootMargin: '0px 0px 400px 0px',
+  });
+
   return(
-    <div className="container">
-      <div className="row">
-        <div className="col-7">
-          <SearchInput search={search} inputSearch={inputSearch} searchVideos={searchVideos}
-            handleKeypress={handleKeypress} loader={loader}/>
-            <div
-              id="scrollableDiv"
-              style={{
-                height: 600,
-                overflow: 'auto',
-                display: 'flex',
-              }}
-            >
-            <div>
-              <InfiniteScroll
-                dataLength={videos.length}
-                next={() => nextPage()}
-                style={{ display: 'flex'}}
-                hasMore={true}
-                scrollableTarget="scrollableDiv"
-              >
-                <VideoList videos={videos} addVideoToPlayList={addVideoToPlayList} />
-              </InfiniteScroll>
-            </div>
-          </div>
+    <Grid container >
+      <Grid item xs={7}>
+        <SearchInput search={search} inputSearch={inputSearch} searchVideos={searchVideos}
+          handleKeypress={handleKeypress} loader={loader}/>
+        <VideoList videos={videos} addVideoToPlayList={addVideoToPlayList} nextPage={nextPage}/>
+        {/*<div
+          id="scrollableDiv"
+          style={{
+            height: 600,
+            overflow: 'auto',
+            display: 'flex',
+          }}
+        >
+        <div>
+          <InfiniteScroll
+            dataLength={videos.length}
+            next={() => nextPage()}
+            style={{ display: 'flex'}}
+            hasMore={true}
+            scrollableTarget="scrollableDiv"
+          >
+            <VideoList videos={videos} addVideoToPlayList={addVideoToPlayList} />
+          </InfiniteScroll>
         </div>
-        <div className="col-5">
-          <PlayList videos={playListVideos} />
-          <VideoPlayer />
-        </div>
-      </div>
-    </div>
+      </div>*/}
+      </Grid>
+      <Grid item xs={5}>
+        <PlayList videos={playListVideos} />
+        {/*<VideoPlayer />*/}
+      </Grid>
+    </Grid>
   )
 }
 
