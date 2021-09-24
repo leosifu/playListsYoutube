@@ -1,5 +1,5 @@
 export const handlePlayList = (type, video) => {
-  if (type == 'add') {
+  if (type === 'add') {
     return dispatch => dispatch(addNewVideo(video))
   }
 }
@@ -12,8 +12,6 @@ const addNewVideo = (video) => ({
 })
 
 export const handleNextSong = (video) => {
-
-  console.log(video);
 
   return dispatch=> dispatch(changeVideo(video));
 

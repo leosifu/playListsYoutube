@@ -19,7 +19,7 @@ const PlayList = ({videos, currentVideo, }) => {
 
   const startPlayList = () => {
     if (videos.length > 0) {
-      dispatch(handleNextSong(videos[0]))
+      dispatch(handleNextSong(videos[0]));
     }
   }
 
@@ -28,13 +28,16 @@ const PlayList = ({videos, currentVideo, }) => {
     if (currentVideo.id.videoId === video.id.videoId) {
       //Si es la cancion que esta reproduciendose se cambia a la siguiente
       const videoToDeleteIndex = videos.findIndex(song => song.id.videoId === video.id.videoId);
-      dispatch(handleNextSong(videos[videoToDeleteIndex+1]))
+      dispatch(handleNextSong(videos[videoToDeleteIndex+1]));
     }
     dispatch(handleDeleteSong(video));
   }
 
   return(
-    <Paper style={{maxHeight: '80vh', padding: 10}}>
+    <Paper style={{height: '90vh', padding: 10}}>
+      <div style={{textAlign: 'center', marginTop: 20, height: '35vh'}}>
+        <VideoPlayer />
+      </div>
       <div className="vertical-scrollable">
         <Grid container>
           <Grid item xs={4}>
@@ -55,9 +58,6 @@ const PlayList = ({videos, currentVideo, }) => {
             )
           }
         </div>
-      </div>
-      <div style={{textAlign: 'center', marginTop: 20}}>
-        <VideoPlayer />
       </div>
     </Paper>
   )

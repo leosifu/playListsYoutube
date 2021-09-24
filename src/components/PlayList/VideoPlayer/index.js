@@ -41,23 +41,29 @@ const VideoPlayer = () => {
     }
   }
 
-  const opts = {
-      height: '390',
-      width: '640',
-      playerVars: {
-        // https://developers.google.com/youtube/player_parameters
-        autoplay: 1,
-      },
-    };
+  // const opts = {
+  //     height: '390',
+  //     width: '640',
+  //     playerVars: {
+  //       // https://developers.google.com/youtube/player_parameters
+  //       autoplay: 1,
+  //     },
+  //   };
 
   return (
     <>
-      <YouTube
+      {/*<YouTube
         videoId={currentVideo.id.videoId}
         id={currentVideo.id.videoId}
         // className={string}
         // containerClassName={string}
-        opts={opts}
+        opts={
+          {
+            ...opts,
+            height: 'auto',
+
+          }
+        }
         // onReady={func}
         // onPlay={func}
         // onPause={func}
@@ -66,14 +72,15 @@ const VideoPlayer = () => {
         // onStateChange={func}
         // onPlaybackRateChange={func}
         // onPlaybackQualityChange={func}
-      />
-      {/*<ReactPlayer
+      />*/}
+      <ReactPlayer
         playing
-        height={'250px'}
+        controls
+        height={'100%'}
         width={'100%'}
         onEnded={() => nextSong()}
         url={`https://www.youtube.com/watch?v=${currentVideo && currentVideo.id.videoId}`}
-      />*/}
+      />
     </>
   )
 }

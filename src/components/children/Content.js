@@ -1,10 +1,15 @@
 import React from 'react';
 
+import Navbar from '../Navbar';
+
 const Content = ({body}) => {
     return (
-      <div className="content">
-        {body}
-      </div>
+      <>
+        <Navbar />
+        <div className="content">
+          {body}
+        </div>
+      </>
     );
 }
 
