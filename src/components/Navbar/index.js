@@ -24,6 +24,10 @@ const scopes = [
   "streaming",
   "user-read-email",
   "user-read-private",
+  "user-read-playback-state",
+  "user-modify-playback-state",
+  "user-library-read",
+  "user-library-modify"
 ];
 
 const Navbar = () => {
@@ -57,7 +61,7 @@ const Navbar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          Photos
+          Music List
         </Typography>
         <IconButton
           aria-label="account of current user"
@@ -85,11 +89,11 @@ const Navbar = () => {
         >
           <MenuItem onClick={goLoginSpotify}>
             <Icon icon="mdi:spotify" />
-            Login Spotify
+              Login Spotify
             </MenuItem>
           <MenuItem onClick={handleClose}>
             <Icon icon="akar-icons:youtube-fill" />
-            Login Youtube
+              Login Youtube
           </MenuItem>
         </Menu>
       </Toolbar>

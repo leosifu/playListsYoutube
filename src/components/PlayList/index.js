@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState, useEffect, } from 'react';
 
 import {Button, Grid, Paper, } from '@material-ui/core';
 
@@ -13,9 +13,17 @@ import PrimaryButton from '../Utils/Buttons/PrimaryButton';
 
 import './PlayList.css';
 
-const PlayList = ({videos, currentVideo, }) => {
+const PlayList = ({videos, setVideos, currentVideo, }) => {
 
   const dispatch = useDispatch();
+
+  const [selectedVideo, setSelectedVideo] = useState({});
+
+  useEffect(() => {
+    const findVideo = videos[currentVideo.currentSongPosition];
+    console.log(findVideo);
+    setSelectedVideo(findVideo);
+  }, [currentVideo.currentSongPosition]);
 
   const startPlayList = () => {
     if (videos.length > 0) {
@@ -24,19 +32,22 @@ const PlayList = ({videos, currentVideo, }) => {
   }
 
   const deleteVideo = (event, video) => {
-    event.stopPropagation();
-    if (currentVideo.id.videoId === video.id.videoId) {
-      //Si es la cancion que esta reproduciendose se cambia a la siguiente
-      const videoToDeleteIndex = videos.findIndex(song => song.id.videoId === video.id.videoId);
-      dispatch(handleNextSong(videos[videoToDeleteIndex+1]));
-    }
-    dispatch(handleDeleteSong(video));
+    // event.stopPropagation();
+    // if (currentVideo.id.videoId === video.id.videoId) {
+    //   //Si es la cancion que esta reproduciendose se cambia a la siguiente
+    //   const videoToDeleteIndex = videos.findIndex(song => song.id.videoId === video.id.videoId);
+    //   dispatch(handleNextSong(videos[videoToDeleteIndex+1]));
+    // }
+    // dispatch(handleDeleteSong(video));
   }
 
   return(
     <Paper style={{height: '90vh', padding: 10}}>
       <div style={{textAlign: 'center', marginTop: 20, height: '35vh'}}>
-        <VideoPlayer />
+        {
+          selectedVideo &&
+          <VideoPlayer selectedVideo={selectedVideo && selectedVideo} currentVideo={currentVideo} />
+        }
       </div>
       <div className="vertical-scrollable">
         <Grid container>
@@ -52,7 +63,7 @@ const PlayList = ({videos, currentVideo, }) => {
             videos && videos.map(video =>
               <div style={{padding: 10}}>
                 <PlayListCard video={video} deleteVideo={deleteVideo}
-                  selectedVideo={currentVideo && currentVideo.id.videoId === video.id.videoId}
+                  selectedVideo={selectedVideo && selectedVideo}
                 />
               </div>
             )

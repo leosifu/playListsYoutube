@@ -8,6 +8,9 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { useDispatch, } from 'react-redux';
 import {handleNextSong, } from '../../../redux/actions';
 
+import CardDetailsYoutube from './CardDetailsYoutube';
+import CardDetailsSpotify from './CardDetailsSpotify';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -38,12 +41,10 @@ const PlayListCard = ({video, deleteVideo, selectedVideo, }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const title = video.snippet.title.replace(/&#39;/g, "'").replace(/&quot;/g,'"');
-
   const [showButtons, setShowButtons] = useState(false);
 
-  const handleShowButtons = () => {
-    setShowButtons(!showButtons)
+  const handleShowButtons = (status) => {
+    setShowButtons(status);
   }
 
   const selectVideo = () => {
@@ -52,39 +53,17 @@ const PlayListCard = ({video, deleteVideo, selectedVideo, }) => {
 
   return (
     <Card
-      onMouseEnter={handleShowButtons}
-      onMouseLeave={handleShowButtons}
+      onMouseEnter={e => handleShowButtons(true)}
+      onMouseLeave={e => handleShowButtons(false)}
       onClick={selectVideo}
     >
       <Grid container>
-        <Grid item xs={4}>
-          <CardMedia
-            className={classes.cover}
-            image={video.snippet.thumbnails.medium.url}
-            title={title}
-          >
-            <img style={{width: "100%", height: '100%'}} src={video.snippet.thumbnails.medium.url} />
-          </CardMedia>
-        </Grid>
-        <Grid item xs={8}>
-          <CardContent>
-            <Grid container>
-              <Grid item xs={showButtons ? 10 : 12}>
-                <Typography variant="h6" className="limitText">
-                  {title}
-                </Typography>
-              </Grid>
-              {
-                showButtons &&
-                <Grid item xs={2}>
-                  <IconButton onClick={e => deleteVideo(e, video)}>
-                    <ClearIcon/>
-                  </IconButton>
-                </Grid>
-              }
-            </Grid>
-          </CardContent>
-        </Grid>
+        {
+          {
+            'youtube': <CardDetailsYoutube video={video} deleteVideo={deleteVideo} showButtons={showButtons} />,
+            'spotify': <CardDetailsSpotify song={video} deleteVideo={deleteVideo} showButtons={showButtons} />
+          }[video.provider]
+        }
       </Grid>
     </Card>
   )

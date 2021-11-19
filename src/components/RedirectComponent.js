@@ -22,6 +22,7 @@ const RedirectComponent = () => {
 
   const getToken = async (token) => {
     const response = await spotifyLogin(token);
+    console.log(response);
   }
 
 

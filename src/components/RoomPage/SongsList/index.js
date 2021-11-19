@@ -4,11 +4,11 @@ import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 import {Paper, Typography, } from '@material-ui/core';
 
-import VideoCard from './VideoCard';
+import SongCard from './SongCard';
 
-import './videoList.css'
+// import './videoList.css'
 
-const VideoList = ({videos, addVideoToPlayList, loader, loading, nextPage, }) => {
+const SongsList = ({songs, addVideoToPlayList, loading, nextPage, }) => {
 
   const [sentryRef] = useInfiniteScroll({
     loading,
@@ -26,20 +26,20 @@ const VideoList = ({videos, addVideoToPlayList, loader, loading, nextPage, }) =>
   return(
     <>
       <Typography variant="h5">
-        Lista de videos
+        Lista de canciones
       </Typography>
       <div style={{maxHeight: '80vh', overflow: 'auto'}}>
         <Paper style={{padding: 5, height: '60%', overflowY: 'auto'}}>
           {
-            videos && videos.map((video, i) =>
+            songs && songs.map((song, i) =>
               <>
                 {
-                  (i === videos.length - 2) ?
+                  (i === songs.length - 2) ?
                   <div ref={sentryRef}>
-                    <VideoCard video={video} addVideoToPlayList={addVideoToPlayList}/>
+                    <SongCard song={song} addVideoToPlayList={addVideoToPlayList}/>
                   </div>
                   :
-                  <VideoCard video={video} addVideoToPlayList={addVideoToPlayList}/>
+                  <SongCard song={song} addVideoToPlayList={addVideoToPlayList}/>
                 }
               </>
             )
@@ -55,4 +55,4 @@ const VideoList = ({videos, addVideoToPlayList, loader, loading, nextPage, }) =>
   )
 }
 
-export default VideoList;
+export default SongsList;

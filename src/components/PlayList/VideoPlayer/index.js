@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import ReactPlayer from 'react-player';
 import YouTube from 'react-youtube';
+import SpotifyPlayer from 'react-spotify-web-playback';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -12,7 +13,7 @@ const PlayListSelector = createSelector(
   playList => playList
 )
 
-const VideoPlayer = () => {
+const VideoPlayer = ({selectedVideo, }) => {
 
   const dispatch = useDispatch();
 
@@ -50,6 +51,13 @@ const VideoPlayer = () => {
   //     },
   //   };
 
+  const userSpotifyToken = localStorage.getItem('spotifyToken');
+  console.log(selectedVideo);
+
+  const changeSecondVideo = (e) => {
+    console.log(e);
+  }
+
   return (
     <>
       {/*<YouTube
@@ -73,14 +81,24 @@ const VideoPlayer = () => {
         // onPlaybackRateChange={func}
         // onPlaybackQualityChange={func}
       />*/}
-      <ReactPlayer
-        playing
-        controls
-        height={'100%'}
-        width={'100%'}
-        onEnded={() => nextSong()}
-        url={`https://www.youtube.com/watch?v=${currentVideo && currentVideo.id.videoId}`}
-      />
+      {
+        {
+          'youtube': <ReactPlayer
+            playing
+            controls
+            onProgress={changeSecondVideo}
+            height={'100%'}
+            width={'100%'}
+            onEnded={() => nextSong()}
+            url={`https://www.youtube.com/watch?v=${selectedVideo && selectedVideo.url}`}
+          />,
+          'spotify': <SpotifyPlayer
+            token={userSpotifyToken}
+            uris={[currentVideo && currentVideo.uri]}
+          />
+        }[selectedVideo.provider]
+      }
+
     </>
   )
 }

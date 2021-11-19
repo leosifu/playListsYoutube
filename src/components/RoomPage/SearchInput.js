@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { makeStyles, } from '@material-ui/core/styles';
-import {Grid, TextField, Button, } from '@material-ui/core';
+import {Grid, TextField, Button, IconButton, } from '@material-ui/core';
+
+import { Icon } from '@iconify/react';
 
 import PrimaryButton from '../Utils/Buttons/PrimaryButton';
 
@@ -16,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SearchInput = ({search, inputSearch, searchVideos, handleKeypress, type, handleChangeType, }) => {
+const SearchInput = ({search, inputSearch, searchVideos, handleKeypress, type, handleChangeType, provider, handleChangeProvider,
+  searchSpotify, }) => {
 
   const classes = useStyles();
 
@@ -40,7 +43,17 @@ const SearchInput = ({search, inputSearch, searchVideos, handleKeypress, type, h
             justifyContent="space-evenly"
             alignItems="center"
           >
-            <PrimaryButton title={'Buscar'} onClick={searchVideos} />
+            <PrimaryButton title={'Buscar'} onClick={provider === 'youtube' ? searchVideos : searchSpotify} />
+            <IconButton
+              onClick={e => handleChangeProvider(e, provider === 'youtube' ? 'spotify' : 'youtube')}
+            >
+              {
+                provider === 'youtube' ?
+                <Icon icon="logos:youtube-icon" />
+                :
+                <Icon icon="cib:spotify" />
+              }
+            </IconButton>
             <Button
               variant='outlined'
               onClick={handleChangeType}
