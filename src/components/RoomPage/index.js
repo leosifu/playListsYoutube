@@ -24,6 +24,7 @@ import SearchPaginator from './SearchPaginator';
 import VideoList from './VideoList';
 import SongsList from './SongsList';
 // import VideoPlayer from '../VideoPlayer';
+// import socket from '../Utils/Socket';
 
 import './MainPage.css';
 
@@ -49,32 +50,56 @@ const RoomPage = () => {
   const [provider, setProvider] = useState('youtube');
   const [type, setType] = useState(false);
   const [songs, setSongs] = useState(false);
+  const socket = useRef();
 
   useEffect(() => {
     getPlayList();
-  }, []);
-
-  useEffect(() => {
-    const socket = io('http://localhost:8000');
-    console.log(socket);
-
-    socket.on('connnection', () => {
+    socket.current = io('http://localhost:8000');
+    socket.current.on('connnection', () => {
       console.log('connected to server');
     })
 
-    socket.on('playList-updated', (playList) => {
+
+    socket.current.on('playList-updated', (playList) => {
       console.log(playList);
       setPlayListVideos(playList.songs);
+      setCurrentVideo({
+        currentSongMinute: playList.currentSongMinute,
+        currentSongPosition: playList.currentSongPosition
+      });
     })
 
-    socket.on('disconnect', () => {
+    socket.current.on('disconnect', () => {
       console.log('Socket disconnecting');
-      socket.disconnect();
+      socket.current.disconnect();
     });
 
-    return () => socket.disconnect();
-
+    return () => socket.current.disconnect();
   }, []);
+
+  // useEffect(() => {
+  //   const socket = io('http://localhost:8000');
+  //   console.log(socket);
+  //
+  //   socket.on('connnection', () => {
+  //     console.log('connected to server');
+  //   })
+  //
+  //   // socket.emit('newSong', )
+  //
+  //   socket.on('playList-updated', (playList) => {
+  //     console.log(playList);
+  //     setPlayListVideos(playList.songs);
+  //   })
+  //
+  //   socket.on('disconnect', () => {
+  //     console.log('Socket disconnecting');
+  //     socket.disconnect();
+  //   });
+  //
+  //   return () => socket.disconnect();
+  //
+  // }, []);
 
   const getPlayList = async () => {
     try {
@@ -169,15 +194,8 @@ const RoomPage = () => {
   }
 
   const addVideoToPlayList = async (video) => {
-    // setCurrentVideo(video.id.videoId);
-
-    // dispatch(handlePlayList('add', {...video, provider: provider}));
     try {
-      const {data} = await clientAxios().put(`/api/song/add`, {
-        playListId: id,
-        songData: {...video, provider}
-      });
-      console.log(data);
+      socket.current.emit('saveSongToPlaylist', {...video, provider}, id);
     } catch (e) {
       console.log(e);
     }
@@ -219,6 +237,8 @@ const RoomPage = () => {
       </Grid>
       <Grid item xs={5}>
         <PlayList
+          socket={socket}
+          playListId={id}
           videos={playListVideos}
           setVideos={setPlayListVideos}
           currentVideo={currentVideo}

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PlayListCard = ({video, deleteVideo, selectedVideo, }) => {
+const PlayListCard = ({socket, playListId, position, video, deleteVideo, selectedVideo, }) => {
 
   const theme = useTheme();
   const classes = useStyles();
@@ -48,7 +48,7 @@ const PlayListCard = ({video, deleteVideo, selectedVideo, }) => {
   }
 
   const selectVideo = () => {
-    dispatch(handleNextSong(video));
+    socket.current.emit('changeCurrentSongPlaylist', position, playListId);
   }
 
   return (

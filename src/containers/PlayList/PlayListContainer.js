@@ -10,12 +10,12 @@ const PlayListSelector = createSelector(
   playList => playList
 )
 
-const PlayListContainer = ({videos, setVideos, currentVideo, setCurrentVideo, }) => {
+const PlayListContainer = ({socket, playListId, videos, setVideos, currentVideo, setCurrentVideo, }) => {
 
   const playList = useSelector(PlayListSelector);
 
   return(
-    <PlayList videos={videos} setVideos={setVideos} currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
+    <PlayList socket={socket} playListId={playListId} videos={videos} setVideos={setVideos} currentVideo={currentVideo} setCurrentVideo={setCurrentVideo} />
   )
 }
 

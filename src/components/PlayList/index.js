@@ -13,22 +13,21 @@ import PrimaryButton from '../Utils/Buttons/PrimaryButton';
 
 import './PlayList.css';
 
-const PlayList = ({videos, setVideos, currentVideo, }) => {
+const PlayList = ({socket, playListId, videos, setVideos, currentVideo, }) => {
 
   const dispatch = useDispatch();
 
   const [selectedVideo, setSelectedVideo] = useState({});
 
   useEffect(() => {
+    console.log(videos);
     const findVideo = videos[currentVideo.currentSongPosition];
     console.log(findVideo);
     setSelectedVideo(findVideo);
   }, [currentVideo.currentSongPosition]);
 
   const startPlayList = () => {
-    if (videos.length > 0) {
-      dispatch(handleNextSong(videos[0]));
-    }
+    console.log('wii');
   }
 
   const deleteVideo = (event, video) => {
@@ -40,13 +39,19 @@ const PlayList = ({videos, setVideos, currentVideo, }) => {
     // }
     // dispatch(handleDeleteSong(video));
   }
+  console.log(socket);
 
   return(
     <Paper style={{height: '90vh', padding: 10}}>
       <div style={{textAlign: 'center', marginTop: 20, height: '35vh'}}>
         {
           selectedVideo &&
-          <VideoPlayer selectedVideo={selectedVideo && selectedVideo} currentVideo={currentVideo} />
+          <VideoPlayer
+            socket={socket}
+            playListId={playListId}
+            currentVideo={currentVideo}
+            selectedVideo={selectedVideo && selectedVideo}
+          />
         }
       </div>
       <div className="vertical-scrollable">
@@ -60,9 +65,14 @@ const PlayList = ({videos, setVideos, currentVideo, }) => {
         </Grid>
         <div className="rowPlayListCards">
           {
-            videos && videos.map(video =>
+            videos && videos.map((video, i) =>
               <div style={{padding: 10}}>
-                <PlayListCard video={video} deleteVideo={deleteVideo}
+                <PlayListCard
+                  socket={socket}
+                  playListId={playListId}
+                  position={i}
+                  video={video}
+                  deleteVideo={deleteVideo}
                   selectedVideo={selectedVideo && selectedVideo}
                 />
               </div>

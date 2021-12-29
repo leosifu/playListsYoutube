@@ -13,33 +13,25 @@ const PlayListSelector = createSelector(
   playList => playList
 )
 
-const VideoPlayer = ({selectedVideo, }) => {
+const VideoPlayer = ({socket, playListId, currentVideo, selectedVideo, }) => {
 
-  const dispatch = useDispatch();
-
-  const playListData = useSelector(PlayListSelector);
-  const playList = playListData.playList;
-  const currentVideo = playListData.currentVideo;
-
-  useEffect(() => {
-    if (playList.length === 1 && !currentVideo) {
-      dispatch(handleNextSong(playList[0]))
-    }
-  }, [playList])
+  console.log(playListId);
 
   const nextSong = () => {
 
-    const songIndex = playList.findIndex(song => song.snippet.title === currentVideo.snippet.title);
+    socket.current.emit('changeCurrentSongPlaylist', currentVideo.currentSongPosition + 1, playListId);
 
-    if (songIndex === -1) {
-      dispatch(handleNextSong(playList[0]))
-    }
-    if (songIndex === playList.length-1) {
-      dispatch(handleNextSong(playList[0]))
-    }
-    else {
-      dispatch(handleNextSong(playList[songIndex+1]))
-    }
+    // const songIndex = playList.findIndex(song => song.snippet.title === currentVideo.snippet.title);
+    //
+    // if (songIndex === -1) {
+    //   dispatch(handleNextSong(playList[0]))
+    // }
+    // if (songIndex === playList.length-1) {
+    //   dispatch(handleNextSong(playList[0]))
+    // }
+    // else {
+    //   dispatch(handleNextSong(playList[songIndex+1]))
+    // }
   }
 
   // const opts = {
