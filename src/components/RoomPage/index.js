@@ -28,7 +28,6 @@ import SongsList from './SongsList';
 
 import './MainPage.css';
 
-let i = 0;
 const RoomPage = () => {
 
   const dispatch = useDispatch();
@@ -104,7 +103,6 @@ const RoomPage = () => {
   const getPlayList = async () => {
     try {
       const {data} = await clientAxios().get(`/api/playList/${id}`);
-      console.log(data);
       setPlayListVideos(data.songs);
       setCurrentVideo({
         currentSongMinute: data.currentSongMinute,

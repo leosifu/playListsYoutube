@@ -1,12 +1,12 @@
 import {useState} from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Grid, TextField, Card, CardContent, CardMedia, IconButton, Typography, } from '@material-ui/core';
+import {Grid, Card, } from '@material-ui/core';
 
-import ClearIcon from '@material-ui/icons/Clear';
+// import ClearIcon from '@material-ui/icons/Clear';
 
-import { useDispatch, } from 'react-redux';
-import {handleNextSong, } from '../../../redux/actions';
+// import { useDispatch, } from 'react-redux';
+// import {handleNextSong, } from '../../../redux/actions';
 
 import CardDetailsYoutube from './CardDetailsYoutube';
 import CardDetailsSpotify from './CardDetailsSpotify';
@@ -37,9 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PlayListCard = ({socket, playListId, position, video, deleteVideo, selectedVideo, }) => {
 
-  const theme = useTheme();
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const [showButtons, setShowButtons] = useState(false);
 

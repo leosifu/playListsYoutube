@@ -24,7 +24,7 @@ const CardDetailsYoutube = ({song, deleteVideo, showButtons, }) => {
           className={classes.cover}
           title={song.name}
         >
-          <img style={{width: "60%"}} src={songImage} />
+          <img alt={song.name} style={{width: "60%"}} src={songImage} />
         </CardMedia>
       </Grid>
       <Grid item xs={8}>

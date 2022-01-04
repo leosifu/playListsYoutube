@@ -1,10 +1,10 @@
 import {useState, useEffect, } from 'react';
 
-import {Button, Grid, Paper, } from '@material-ui/core';
+import {Grid, Paper, } from '@material-ui/core';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
-import {handleNextSong, handleDeleteSong, } from '../../redux/actions';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { createSelector } from 'reselect';
+// import {handleNextSong, handleDeleteSong, } from '../../redux/actions';
 
 import PlayListCard from './PlayListCard/PlayListCard';
 import VideoPlayer from './VideoPlayer';
@@ -15,23 +15,24 @@ import './PlayList.css';
 
 const PlayList = ({socket, playListId, videos, setVideos, currentVideo, }) => {
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [selectedVideo, setSelectedVideo] = useState({});
 
   useEffect(() => {
-    console.log(videos);
     const findVideo = videos[currentVideo.currentSongPosition];
     console.log(findVideo);
     setSelectedVideo(findVideo);
-  }, [currentVideo.currentSongPosition]);
+  }, [currentVideo.currentSongPosition, videos]);
 
   const startPlayList = () => {
-    console.log('wii');
+    const findVideo = videos[currentVideo.currentSongPosition];
+    setSelectedVideo(findVideo);
   }
 
   const deleteVideo = (event, video) => {
-    // event.stopPropagation();
+    event.stopPropagation();
+    socket.current.emit('deleteSongFromPlayList', video._id, playListId);
     // if (currentVideo.id.videoId === video.id.videoId) {
     //   //Si es la cancion que esta reproduciendose se cambia a la siguiente
     //   const videoToDeleteIndex = videos.findIndex(song => song.id.videoId === video.id.videoId);
@@ -39,7 +40,6 @@ const PlayList = ({socket, playListId, videos, setVideos, currentVideo, }) => {
     // }
     // dispatch(handleDeleteSong(video));
   }
-  console.log(socket);
 
   return(
     <Paper style={{height: '90vh', padding: 10}}>
@@ -47,6 +47,7 @@ const PlayList = ({socket, playListId, videos, setVideos, currentVideo, }) => {
         {
           selectedVideo &&
           <VideoPlayer
+            key={selectedVideo.url}
             socket={socket}
             playListId={playListId}
             currentVideo={currentVideo}

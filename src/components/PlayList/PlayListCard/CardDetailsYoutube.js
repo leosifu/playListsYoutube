@@ -25,7 +25,7 @@ const CardDetailsYoutube = ({video, deleteVideo, showButtons, }) => {
           image={video.image}
           title={title}
         >
-          <img style={{width: "100%", height: '100%'}} src={video.image} />
+          <img style={{width: "100%", height: '100%'}} src={video.image} alt={title} />
         </CardMedia>
       </Grid>
       <Grid item xs={8}>
