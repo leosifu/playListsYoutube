@@ -100,7 +100,13 @@ const VideoCard = ({video, addVideoToPlayList, }) => {
               {
                 showButtons &&
                 <Grid item xs={1}>
-                  <IconButton onClick={() => addVideoToPlayList(video)}>
+                  <IconButton onClick={() => addVideoToPlayList(
+                    {
+                      url: video.id.videoId,
+                      songName: video.snippet.title,
+                      image: video.snippet.thumbnails.medium.url
+                    }
+                  )}>
                     <ArrowForwardIcon/>
                   </IconButton>
                 </Grid>

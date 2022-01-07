@@ -15,7 +15,7 @@ const CardDetailsYoutube = ({song, deleteVideo, showButtons, }) => {
 
   const classes = useStyles();
 
-  const songImage = song.album?.images[1]?.url;
+  // const songImage = song.album?.images[1]?.url;
 
   return (
     <>
@@ -24,7 +24,7 @@ const CardDetailsYoutube = ({song, deleteVideo, showButtons, }) => {
           className={classes.cover}
           title={song.name}
         >
-          <img alt={song.name} style={{width: "60%"}} src={songImage} />
+          <img alt={song.name} style={{width: "60%"}} src={song.image} />
         </CardMedia>
       </Grid>
       <Grid item xs={8}>
@@ -32,7 +32,7 @@ const CardDetailsYoutube = ({song, deleteVideo, showButtons, }) => {
           <Grid container>
             <Grid item xs={showButtons ? 10 : 12}>
               <Typography variant="h6" className="limitText">
-                {song.name}
+                {song.songName}
               </Typography>
             </Grid>
             {

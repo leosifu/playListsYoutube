@@ -62,7 +62,13 @@ const SongCard = ({song, addVideoToPlayList, }) => {
               {
                 showButtons &&
                 <Grid item xs={1}>
-                  <IconButton onClick={() => addVideoToPlayList(song)}>
+                  <IconButton onClick={() => addVideoToPlayList(
+                    {
+                      url: song.uri,
+                      songName: song.name,
+                      image: songImage
+                    }
+                  )}>
                     <ArrowForwardIcon/>
                   </IconButton>
                 </Grid>

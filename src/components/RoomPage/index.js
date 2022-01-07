@@ -192,6 +192,7 @@ const RoomPage = () => {
   }
 
   const addVideoToPlayList = async (video) => {
+    // console.log(video);
     try {
       socket.current.emit('saveSongToPlaylist', {...video, provider}, id);
     } catch (e) {

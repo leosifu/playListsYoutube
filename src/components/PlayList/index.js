@@ -6,6 +6,9 @@ import {Grid, Paper, } from '@material-ui/core';
 // import { createSelector } from 'reselect';
 // import {handleNextSong, handleDeleteSong, } from '../../redux/actions';
 
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
 import PlayListCard from './PlayListCard/PlayListCard';
 import VideoPlayer from './VideoPlayer';
 
@@ -65,20 +68,22 @@ const PlayList = ({socket, playListId, videos, setVideos, currentVideo, }) => {
           </Grid>
         </Grid>
         <div className="rowPlayListCards">
-          {
-            videos && videos.map((video, i) =>
-              <div style={{padding: 10}}>
-                <PlayListCard
-                  socket={socket}
-                  playListId={playListId}
-                  position={i}
-                  video={video}
-                  deleteVideo={deleteVideo}
-                  selectedVideo={selectedVideo && selectedVideo}
-                />
-              </div>
-            )
-          }
+          <DndProvider backend={HTML5Backend}>
+            {
+              videos && videos.map((video, i) =>
+                <div style={{padding: 10}}>
+                  <PlayListCard
+                    socket={socket}
+                    playListId={playListId}
+                    position={i}
+                    video={video}
+                    deleteVideo={deleteVideo}
+                    selectedVideo={selectedVideo && selectedVideo}
+                  />
+                </div>
+              )
+            }
+          </DndProvider>
         </div>
       </div>
     </Paper>
