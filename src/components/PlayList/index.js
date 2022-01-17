@@ -10,6 +10,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import PlayListCard from './PlayListCard/PlayListCard';
+import PlayListDD from './PlayListDD';
 import VideoPlayer from './VideoPlayer';
 
 import PrimaryButton from '../Utils/Buttons/PrimaryButton';
@@ -69,7 +70,7 @@ const PlayList = ({socket, playListId, videos, setVideos, currentVideo, }) => {
         </Grid>
         <div className="rowPlayListCards">
           <DndProvider backend={HTML5Backend}>
-            {
+            {/*
               videos && videos.map((video, i) =>
                 <div style={{padding: 10}}>
                   <PlayListCard
@@ -82,7 +83,14 @@ const PlayList = ({socket, playListId, videos, setVideos, currentVideo, }) => {
                   />
                 </div>
               )
-            }
+            */}
+            <PlayListDD
+              videos={videos}
+              socket={socket}
+              playListId={playListId}
+              deleteVideo={deleteVideo}
+              selectedVideo={selectedVideo}
+            />
           </DndProvider>
         </div>
       </div>
